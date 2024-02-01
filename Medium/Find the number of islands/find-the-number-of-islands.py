@@ -4,30 +4,26 @@ import sys
 sys.setrecursionlimit(10**8)
 class Solution:
     def numIslands(self,grid):
-        n = len(grid)
-        m = len(grid[0])
-        q = []
-        vis = [[0 for i in range(m)]for i in range(n)]
-        count = 0
-        for i in range(n):
-            for j in range(m):
-                if grid[i][j] == 1 and vis[i][j] == 0:
-                    count += 1
-                    q.append([i, j])
-                    vis[i][j] = 1
-                    while q:
-                        r = q[0][0]
-                        c = q[0][1]
-                        q.pop(0)
-                        for dr in range(-1, 2):
-                            for dc in range(-1, 2):
-                                nr = r + dr
-                                nc = c + dc
-                                if nr >= 0 and nr < n and nc >= 0 and nc < m and grid[nr][nc] == 1 and vis[nr][nc] == 0:
-                                    q.append([nr, nc])
-                                    vis[nr][nc] = 1
-        return count
-        #code here
+        islands = 0
+
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == 1:
+                    self.dfs(grid, r, c)
+                    islands += 1
+
+        return islands
+
+    def dfs(self, grid, r, c):
+        if 0 <= r < len(grid) and 0 <= c < len(grid[0]) and grid[r][c] == 1:
+            grid[r][c] = 0  # Mark visited cell
+
+            directions = [(r-1, c-1), (r-1, c), (r-1, c+1),
+                          (r, c-1), (r, c+1),
+                          (r+1, c-1), (r+1, c), (r+1, c+1)]
+
+            for row, col in directions:
+                self.dfs(grid, row, col)
 
 
 #{ 
